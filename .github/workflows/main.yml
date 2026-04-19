@@ -22,6 +22,17 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-            pwd
-            ls
-            whoami
+            
+            cd /home/ubuntu/Ecommerce-Website-Java
+            git pull origin main
+
+            cd /home/ubuntu/Ecommerce-Website-Java/backend
+            mvn clean package -DskipTests
+
+            pkill -f 'ecommerce-backend' || true
+
+            nohup java -jar target/*.jar \
+              --server.address=0.0.0.0 \
+              --server.port=8080 \
+              --spring.data.mongodb.uri=mongodb://localhost:27017/ecommerce \
+              > backend.log 2>&1 &
