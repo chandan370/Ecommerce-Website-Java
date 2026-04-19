@@ -29,7 +29,11 @@ jobs:
             cd /home/ubuntu/Ecommerce-Website-Java/backend
             mvn clean package -DskipTests
 
-            pkill -f 'target/ecommerce-backend-1.0.0.jar' || true || true
+            OLD_PID=$(lsof -ti:8080 || true)
+            if [ -n "$OLD_PID" ]; then
+              kill -15 $OLD_PID
+              sleep 5
+            fi
 
             nohup java -jar target/*.jar \
               --server.address=0.0.0.0 \
