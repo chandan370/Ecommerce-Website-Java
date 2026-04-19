@@ -8,7 +8,7 @@ on:
 jobs:
   test-ssh:
     runs-on: ubuntu-latest
-     environment: defualt
+    environment: defualt
 
     steps:
       - name: Checkout code
